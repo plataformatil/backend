@@ -32,6 +32,19 @@ public class RegisterService {
                             " de cadastro falhadas");
         }
         try {
+            if (register.getCpf() != null) {
+                var allCpfs = userRepository.findAllUsersCpf();
+                if (allCpfs.contains(register.getCpf())) {
+                    throw new InvalidUserException("O CPF do usuário ja está cadastrado.");
+                }
+            }
+            if(register.getCnpj() != null){
+                var allCnpjs = userRepository.findAllUsersCnpj();
+                if(allCnpjs.contains(register.getCnpj())){
+                    throw new InvalidUserException("O CNPJ do usuário ja está cadastrado.");
+                }
+            }
+
             User user = new User(register);
             UserValidation.isValid(user, userRepository);
 
