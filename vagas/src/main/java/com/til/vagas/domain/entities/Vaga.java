@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "vaga")
+@Table(name = "vagas")
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class Vaga {
@@ -20,9 +20,15 @@ public @Data class Vaga {
 	private Long id;
 
 	private String titulo;
-	private String descricao;
-	private String localizacao;
 	private Double salario;
-	private String requisitos;
+	private String localizacao; // Combinar cidade, estado, ou CEP
+	private String rua;
+	private String cidade;
+	private String estado;
+	private String pais;
+	private String cep;
+	private String modelo; // Presencial, Remoto ou Híbrido
+	private String empresa;
+	private String nivel; // Estágio, aprendiz, etc.
 
 }
