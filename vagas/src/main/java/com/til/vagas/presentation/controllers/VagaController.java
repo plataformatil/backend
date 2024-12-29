@@ -17,22 +17,29 @@ import com.til.vagas.domain.entities.Vaga;
 @RequestMapping("/vagas")
 public class VagaController {
 
-	private final VagaService vagaService;
+    private final VagaService vagaService;
 
-	public VagaController(VagaService vagaService) {
-		this.vagaService = vagaService;
-	}
+    public VagaController(VagaService vagaService) {
+        this.vagaService = vagaService;
+    }
 
-	@GetMapping
-	public Page<Vaga> buscarVagas(@RequestParam(required = false) String cargo,
-			@RequestParam(required = false) String localizacao, @RequestParam(defaultValue = "0") int pagina,
-			@RequestParam(defaultValue = "6") int tamanho) {
-		return vagaService.buscarVagas(cargo, localizacao, pagina, tamanho);
-	}
+    @GetMapping("filtrar-vagas")
+    public Page<Vaga> filtrarVagas(
+            @RequestParam(required = false) String cargo,
+            @RequestParam(required = false) String localizacao,
+            @RequestParam(defaultValue = "1") int pagina,
+            @RequestParam(defaultValue = "6") int tamanho) {
 
-	@PutMapping("{id}")
-	public ResponseEntity<Vaga> atualizarVaga(@PathVariable Long id, @RequestBody Vaga novaVaga) {
-		Vaga vagaAtualizada = vagaService.atualizarVaga(id, novaVaga);
-		return ResponseEntity.ok(vagaAtualizada);
-	}
+        if (pagina < 1) {
+            throw new IllegalArgumentException("A página deve ser 1 ou maior.");
+        }
+
+        return vagaService.buscarVagas(cargo, localizacao, pagina - 1, tamanho);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Vaga> atualizarVaga(@PathVariable Long id, @RequestBody Vaga novaVaga) {
+        Vaga vagaAtualizada = vagaService.atualizarVaga(id, novaVaga);
+        return ResponseEntity.ok(vagaAtualizada);
+    }
 }
